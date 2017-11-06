@@ -498,88 +498,73 @@
                             <div class="col-lg-6">
                                 <div class="box dark">
                                     <header>
-                                        <div class="icons"><i class="fa fa-edit"></i></div>
-                                        <h5>Input Text Fields</h5>
-                                        <!-- .toolbar -->
-                                        <div class="toolbar">
-                                            <nav style="padding: 8px;">
-                                                <a href="javascript:;" class="btn btn-default btn-xs collapse-box">
-                                                    <i class="fa fa-minus"></i>
-                                                </a>
-                                                <a href="javascript:;" class="btn btn-default btn-xs full-box">
-                                                    <i class="fa fa-expand"></i>
-                                                </a>
-                                                <a href="javascript:;" class="btn btn-danger btn-xs close-box">
-                                                    <i class="fa fa-times"></i>
-                                                </a>
-                                            </nav>
-                                        </div>            <!-- /.toolbar -->
+                                        <div class="icons"><i class="fa fa-exchange"></i></div>
+                                        <h5>Transaction Details</h5>
+                                        
                                     </header>
                                     <div id="div-1" class="body">
                                         <form class="form-horizontal">
-                                            <div class="form-group">
-                                                <label for="text1" class="control-label col-lg-4">Normal Input Field</label>
-                                                <div class="col-lg-8">
-                                                    <input type="text" id="text1" placeholder="Email" class="form-control">
-                                                </div>
-                                            </div>
+                                         
                                             <!-- /.form-group -->
                                             <div class="form-group">
-                                                <label for="pass1" class="control-label col-lg-4">Password Field</label>
+                                                <label for="text2" class="control-label col-lg-4">To</label>
                                                 <div class="col-lg-8">
-                                                    <input class="form-control" type="password" id="pass1"
-                                                           data-original-title="Please use your secure password" data-placement="top" />
+                                                    <select class="form-control">
+                                                        <option>Broker 01</option>
+                                                        <option>Broker 02</option>
+                                                        <option>Broker 03</option>
+                                                        <option>Broker 14</option>
+                                                        <option>Broker 21</option>
+                                                    </select>
                                                 </div>
                                             </div>
+
                                             <!-- /.form-group -->
                                             <div class="form-group">
-                                                <label class="control-label col-lg-4">Read only input</label>
+                                                <label for="text2" class="control-label col-lg-4">Asset Name</label>
                                                 <div class="col-lg-8">
-                                                    <input type="text" value="read only" readonly class="form-control">
+                                                    <select class="form-control">
+                                                        <option>AMZN</option>
+                                                        <option>GOOGL</option>
+                                                        <option>C</option>
+                                                        <option>TSLA</option>
+                                                        <option>BABA</option>
+                                                    </select>
                                                 </div>
                                             </div>
+
                                             <!-- /.form-group -->
                                             <div class="form-group">
-                                                <label class="control-label col-lg-4">Disabled input</label>
+                                                <label for="text2" class="control-label col-lg-4">Transaction Amount</label>
                                                 <div class="col-lg-8">
-                                                    <input type="text" value="disabled" disabled class="form-control">
+                                                    <input type="text" id="text2" placeholder="Transaction Amount" class="form-control">
                                                 </div>
                                             </div>
+
+                                          
+
                                             <!-- /.form-group -->
-                                            <div class="form-group">
+                                            <!--<div class="form-group">
                                                 <label for="text2" class="control-label col-lg-4">With Placeholder</label>
                                                 <div class="col-lg-8">
                                                     <input type="text" id="text2" placeholder="placeholder text" class="form-control">
                                                 </div>
-                                            </div>
-                                            <!-- /.form-group -->
-                                            <div class="form-group">
-                                                <label for="limiter" class="control-label col-lg-4">Input limiter</label>
-                                                <div class="col-lg-8">
-                                                    <textarea id="limiter" class="form-control"></textarea>
-                                                </div>
-                                            </div>
+                                            </div>-->
+                                                                                     
                                             <!-- /.row -->
                                             <div class="form-group">
-                                                <label for="text4" class="control-label col-lg-4">Default Textarea</label>
+                                                <label for="text4" class="control-label col-lg-4">Comments</label>
                                                 <div class="col-lg-8">
                                                     <textarea id="text4" class="form-control"></textarea>
                                                 </div>
                                             </div>
-                                            <!-- /.form-group -->
-                                            <div class="form-group">
-                                                <label for="autosize" class="control-label col-lg-4">Textarea With Autosize</label>
-                                                <div class="col-lg-8">
-                                                    <textarea id="autosize" class="form-control"></textarea>
-                                                </div>
+
+                                            <!-- .well well-small -->
+                                            <div class="">                                            
+                                                <button class="btn btn-success btn-block">Submit Transaction</button>
                                             </div>
-                                            <!-- /.form-group -->
-                                            <div class="form-group">
-                                                <label for="tags" class="control-label col-lg-4">Tags</label>
-                                                <div class="col-lg-8">
-                                                    <input name="tags" id="tags" value="foo,bar,baz" class="form-control">
-                                                </div>
-                                            </div>
+                                            <!-- /.well well-small -->
+                                         
                                             <!-- /.form-group -->
                                         </form>
                                     </div>
