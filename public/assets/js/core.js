@@ -203,3 +203,16 @@
       Metis.boxHiding();
    });
 })(jQuery);
+
+var chainReportJson = [{ "from": "Citi", "to": "BrokerA", "asset": "TSLA", "amount": 99 },
+    { "from": "Citi", "to": "BrokerB", "asset": "ATVI", "amount": 199 },
+    { "from": "Citi", "to": "BrokerC", "asset": "C", "amount": 299 }];
+
+function getChainReportItem(from, to, asset, amount) {
+    return "<div class='well'>" + from + "&nbsp;gave&nbsp;" + to + "&nbsp;" + amount + "&nbsp;" + asset + "</div>";
+}
+
+$(document).on('click', '#btnSubmitTransaction', function () {
+
+
+});
