@@ -213,6 +213,8 @@ function getChainReportItem(from, to, asset, amount) {
 }
 
 $(document).on('click', '#btnSubmitTransaction', function () {
-
-
+    var broker = $('#submitTrans_broker').val();
+    var asset = $('#submitTrans_asset').val();
+    var amount = $('#submitTrans_amount').val();
+    chainReportJson.push({ "from": "Citi", "to": broker, "asset": asset, "amount": amount });
 });
