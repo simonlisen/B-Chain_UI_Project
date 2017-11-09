@@ -209,7 +209,10 @@ var chainReportJson = [{ "from": "Citi", "to": "BrokerA", "asset": "TSLA", "amou
     { "from": "Citi", "to": "BrokerC", "asset": "C", "amount": 299 }];
 
 function getChainReportItem(from, to, asset, amount) {
-    return "<div class='well'>" + from + "&nbsp;gave&nbsp;" + to + "&nbsp;" + amount + "&nbsp;" + asset + "</div>";
+    var hash = '449d677056d2a18657652d9eb39084e98e286849cebb1ddf32b6d3efae010a05';
+    return "<div class='panel panel-default'><div class='panel-heading'><a>" + hash + "</a></div><div class='panel-body'>" + "" + from + "&emsp;<i class='fa fa-arrow-right' aria-hidden='true'></i>&emsp;"
+        + to + "&emsp;" + "<div class='btn btn-danger pull-right'>" + amount + "&emsp;" + asset + "</div></div></div>";
+
 }
 
 $(document).on('click', '#btnSubmitTransaction', function () {
