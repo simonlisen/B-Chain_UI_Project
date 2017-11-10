@@ -640,7 +640,7 @@
                         for (var i = 0; i < chainReportJson.length; i++) {
                             var item = chainReportJson[i];
                             //chainreportpnl.append(getChainReportItem(item.from, item.to, item.asset, item.amount));
-                            $('#chainreportpnl').append(getChainReportItem(item.from, item.to, item.asset, item.amount));
+                            $('#chainreportpnl').append(getChainReportItem(item.hash, item.from, item.to, item.asset, item.amount, item.timestamp));
                         }
                     });
                 </script>
