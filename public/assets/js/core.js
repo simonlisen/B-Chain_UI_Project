@@ -204,9 +204,7 @@
    });
 })(jQuery);
 
-var chainReportJson = [{ "hash": "449d677056d2a18657652d9eb39084e98e286849cebb1ddf32b6d3efae010a05", "from": "Citi", "to": "BrokerA", "asset": "TSLA", "amount": 99, "timestamp": " 2017-11-10 08:09:04.423" },
-    { "hash": "437adf08b5720827c8aebb0904c45f96f3fac3f164d260d0af3764b247ecb527", "from": "Citi", "to": "BrokerB", "asset": "ATVI", "amount": 199, "timestamp": " 2017-11-11 01:20:04.423" },
-    { "hash": "afb260c6dcdb5b85c2cda26766934363d0b26bbea8f9d486df4413ef0684574d", "from": "Citi", "to": "BrokerC", "asset": "C", "amount": 299, "timestamp": " 2017-11-12 12:10:0.423" }];
+
 
 function getChainReportItem(hash, from, to, asset, amount, timestamp) {
     //var hash = '449d677056d2a18657652d9eb39084e98e286849cebb1ddf32b6d3efae010a05';
@@ -220,5 +218,7 @@ $(document).on('click', '#btnSubmitTransaction', function () {
     var asset = $('#submitTrans_asset').val();
     var amount = $('#submitTrans_amount').val();
     var timestamp = new Date();
-    chainReportJson.push({ "hash": "N/A", "from": "Citi", "to": broker, "asset": asset, "amount": amount, "timestamp": timestamp });
+    var data = JSON.parse(localStorage.getItem("chaindata"));
+    data.push({ "hash": "N/A", "from": "Citi", "to": broker, "asset": asset, "amount": amount, "timestamp": timestamp });
+    localStorage.setItem("chaindata", JSON.stringify(data))
 });
