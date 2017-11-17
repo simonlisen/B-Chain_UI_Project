@@ -507,7 +507,7 @@
                 </div>
             </header>
             <div class="body" id="chainreportpnl">
-                
+                <button id ="btnGetTradeData" class="btn btn-success">Get Data</button>
             </div>
         </div>
     </div>
@@ -639,12 +639,27 @@
                         Metis.metisSortable();
                         //var chain = localStorage.chaindata;
                         var chain = JSON.parse(localStorage.getItem("chaindata"));
-                        for (var i = 0; i < chain.length; i++) {
+                        for (var i = chain.length - 1; i >= 0; i--) {
                             var item = chain[i];
                             //chainreportpnl.append(getChainReportItem(item.from, item.to, item.asset, item.amount));
                             $('#chainreportpnl').append(getChainReportItem(item.hash, item.from, item.to, item.asset, item.amount, item.timestamp));
                         }
                     });
+
+                    //get trade data
+                    $(document).on('click','#btnGetTradeData',function(){
+                        $.ajax({
+                            url: "http://192.168.0.109:3000/api/Trader",
+                            type:'get',
+                            //data: data,
+                            success: function(result){
+                                updateTraderDataHtml(result);
+                            },
+                            //dataType: 'JSON'
+                        });
+                    });
+
+
                 </script>
 
             <script src="assets/js/style-switcher.js"></script>

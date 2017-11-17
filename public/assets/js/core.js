@@ -213,12 +213,38 @@ function getChainReportItem(hash, from, to, asset, amount, timestamp) {
 
 }
 
+function getTraderItem(trader) {
+    return "<div class='panel panel-default'><div class='panel-heading'><a>" + trader.$class + "</a><div class='pull-right'> Timestamp: " + trader.tradeId + " </div></div><div class='panel-body'>" + "" + from + "&emsp;<i class='fa fa-arrow-right' aria-hidden='true'></i>&emsp;"
+        + to + "&emsp;" + "<div class='btn btn-danger pull-right'>" + trader.firstName + "&emsp;" + trader.lastName + "</div></div></div>";
+
+}
+
+//data: JSON array of trader data
+function updateTraderDataHtml(data){
+    debugger;
+    //$('#chainreportpnl')
+    $('#chainreportpnl').empty();
+    var html = "";
+    if(data.length==0){
+        html += "<h4>No data available.</h4>>";
+    }
+    else {
+        for(var i=0; i<data.length; i++){
+            html += getTraderItem(data[i]);
+        }
+    }
+    $('#chainreportpnl').append(html);
+}
+
 $(document).on('click', '#btnSubmitTransaction', function () {
     var broker = $('#submitTrans_broker').val();
     var asset = $('#submitTrans_asset').val();
     var amount = $('#submitTrans_amount').val();
     var timestamp = new Date();
     var data = JSON.parse(localStorage.getItem("chaindata"));
-    data.push({ "hash": "N/A", "from": "Citi", "to": broker, "asset": asset, "amount": amount, "timestamp": timestamp });
-    localStorage.setItem("chaindata", JSON.stringify(data))
+    var hash = "afb260c6dcdb5b85c2cda26766934363d0b26bbea8f9d486df4413ef0684574d";
+    data.push({ "hash": hash, "from": "Citi", "to": broker, "asset": asset, "amount": amount, "timestamp": timestamp });
+    localStorage.setItem("chaindata", JSON.stringify(data));
+    // bootbox.confirm("Transaction submitted successfully.", function () { });
+    alert("Transaction submitted successfully.");
 });
