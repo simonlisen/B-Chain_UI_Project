@@ -219,9 +219,38 @@ function getTraderItem(trader) {
 
 }
 
+function getNodeRowItem(node) {
+    //return "<div class='panel panel-default'><div class='panel-heading'><a>" + trader.$class + "</a><div class='pull-right'> Timestamp: " + trader.tradeId + " </div></div><div class='panel-body'>" + "" + "&emsp;<i class='fa fa-arrow-right' aria-hidden='true'></i>&emsp;"
+      //  + "" + "&emsp;" + "<div class='btn btn-danger pull-right'>" + trader.firstName + "&emsp;" + trader.lastName + "</div></div></div>";
+    return "  <tr>\n" +
+        "<td>" + node.name + "</td>\n" +
+        "<td>" + node.hash + "</td>\n" +
+        "<td>" + node.ip + "</td>\n" +
+        "<td>" + node.status + "</td>\n" +
+        "<td>" + node.css + "</td>\n" +
+        "</tr>"
+}
+
+function getNodeHeadItem() {
+    return "<table id=\"dataTable\" class=\"table table-bordered table-condensed table-hover table-striped\">\n" +
+        "<thead>\n" +
+        "<tr>\n" +
+        "<th>Name</th>\n" +
+        "<th>Hash</th>\n" +
+        "<th>IP</th>\n" +
+        "<th>Status</th>\n" +
+        "<th>CSS grade</th>\n" +
+        "</tr>\n" +
+        "</thead>\n" +
+        "<tbody>"
+}
+
+function getNodeTailItem() {
+    return "</tbody></table>"
+}
+
 //data: JSON array of trader data
 function updateTraderDataHtml(data){
-    debugger;
     //$('#chainreportpnl')
     $('#chainreportpnl').empty();
     var html = "";
