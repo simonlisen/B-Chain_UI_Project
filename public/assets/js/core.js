@@ -382,6 +382,36 @@ $(document).on('click', '#btnSubmitTransaction', function () {
     var hash = "afb260c6dcdb5b85c2cda26766934363d0b26bbea8f9d486df4413ef0684574d";
     data.push({ "hash": hash, "from": "Citi", "to": broker, "asset": asset, "amount": amount, "timestamp": timestamp });
     localStorage.setItem("chaindata", JSON.stringify(data));
-    bootbox.alert("<i class='fa fa-3x fa-check-circle-o' style='color:green'></i>&emsp;Transaction submitted successfully.", function () { });
+    bootbox.alert("<i class='fa fa-2x fa-check-circle-o' style='color:green'></i>&emsp;Transaction submitted successfully.", function () { });
     //alert("Transaction submitted successfully.");
+});
+
+function cacheNodeListOnLogin(){
+    $.ajax({
+        url: "http://182.61.49.216:8081/getAllNodes",
+        type:'get',
+        dataType: 'json',
+        jsonp: "callback",
+        success: function(result){
+            localStorage.setItem("NodeList", JSON.stringify(result))
+        },
+    });
+}
+
+//submit new transaction
+$(document).on('click', '#btnLoginSubmit', function (event) {
+    debugger;
+    event.preventDefault();
+    var nodeIdList = getNodeIdList();//getNodeIdList
+    var inputId = $('#txtLoginId').val();
+    if($.inArray(inputId, nodeIdList) == -1){//not match
+        bootbox.alert("<i class='fa fa-2x fa-times-circle' style='color:red'></i>&emsp;Invalid ID or Password. Please try again.", function () { });
+        $('#txtLoginId').val("");
+        $('#txtLoginPsw').val("");
+        return false;
+    }
+    else{
+        window.location = "dashboard.html";
+    }
+
 });

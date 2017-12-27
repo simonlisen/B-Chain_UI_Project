@@ -41,6 +41,7 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="https://use.fontawesome.com/62384eacea.js"></script>
 
 </head>
 
@@ -55,17 +56,18 @@
     <div class="tab-content">
         <div id="login" class="tab-pane active">
             <form action="dashboard.html">
+                <!--action="dashboard.html"-->
                 <p class="text-muted text-center">
                     Enter Node ID and Password
                 </p>
-                <input type="text" placeholder="Node Id" class="form-control top">
-                <input type="password" placeholder="Password" class="form-control bottom">
+                <input id="txtLoginId" type="text" placeholder="Node Id" class="form-control top">
+                <input id="txtLoginPsw" type="password" placeholder="Password" class="form-control bottom">
                 <div class="checkbox">
 		  <label>
 		    <input type="checkbox"> Remember Me
 		  </label>
 		</div>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                <button id="btnLoginSubmit" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
             </form>
         </div>
         <div id="forgot" class="tab-pane">
@@ -102,7 +104,20 @@
 
     <!--Bootstrap -->
     <script src="assets/lib/bootstrap/js/bootstrap.js"></script>
+      <!--Bootbox -->
+      <script src="assets/lib/bootbox/bootbox.min.js"></script>
+      <!-- MetisMenu -->
+      <script src="assets/lib/metismenu/metisMenu.js"></script>
+      <!-- onoffcanvas -->
+      <script src="assets/lib/onoffcanvas/onoffcanvas.js"></script>
+      <!-- Screenfull -->
+      <script src="assets/lib/screenfull/screenfull.js"></script>
 
+
+      <!-- Metis core scripts -->
+      <script src="assets/js/core.js"></script>
+      <!-- Metis demo scripts -->
+      <script src="assets/js/app.js"></script>
 
     <script type="text/javascript">
         //localStorage.chaindata = chainReportJson;
@@ -114,6 +129,7 @@
             $(document).ready(function() {
                 $('.list-inline li > a').click(function() {
                     var activeForm = $(this).attr('href') + ' > form';
+
                     //console.log(activeForm);
                     $(activeForm).addClass('animated fadeIn');
                     //set timer to 1 seconds, after that, unload the animate animation
@@ -128,17 +144,7 @@
             });
         })(jQuery);
 
-        function cacheNodeListOnLogin(){
-            $.ajax({
-                url: "http://182.61.49.216:8081/getAllNodes",
-                type:'get',
-                dataType: 'json',
-                jsonp: "callback",
-                success: function(result){
-                    localStorage.setItem("NodeList", JSON.stringify(result))
-                },
-            });
-        }
+
     </script>
 </body>
 
