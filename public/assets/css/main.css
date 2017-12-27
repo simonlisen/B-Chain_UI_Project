@@ -2538,3 +2538,7 @@ body.error .logo h1 {
 .logo-topright {
   margin: 8px !important;
 }
+
+#content{
+  min-height:800px;
+}

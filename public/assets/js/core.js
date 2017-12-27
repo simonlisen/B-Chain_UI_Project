@@ -204,6 +204,44 @@
    });
 })(jQuery);
 
+//b-chain js code
+
+
+function getNodeIdList(){
+    var nodelist = JSON.parse(localStorage.getItem("NodeList"));//JSON.parse(str);
+    var peerNodeList = nodelist.PeerNodes;
+    var orderNodesList = nodelist.OrderNodes;
+    var result =[];
+    if(peerNodeList.length >0){
+        for(var i = 0; i<peerNodeList.length; i++){
+            result.push(peerNodeList[i].NodeID);
+        }
+    }
+    if(orderNodesList.length >0){
+        for(var j = 0; j<orderNodesList.length; j++){
+            result.push(orderNodesList[j].NodeID);
+        }
+    }
+    return result;
+}
+
+function getNodeNameList(){
+    var nodelist = JSON.parse(localStorage.getItem("NodeList"));
+    var peerNodeList = nodelist.PeerNodes;
+    var orderNodesList = nodelist.OrderNodes;
+    var result =[];
+    if(peerNodeList.length >0){
+        for(var i = 0; i<peerNodeList.length; i++){
+            result.push(peerNodeList[i].NodeName);
+        }
+    }
+    if(orderNodesList.length >0){
+        for(var j = 0; j<orderNodesList.length; j++){
+            result.push(orderNodesList[j].NodeName);
+        }
+    }
+    return result;
+}
 
 
 function getChainReportItem(hash, from, to, asset, amount, timestamp) {
@@ -219,16 +257,39 @@ function getTraderItem(trader) {
 
 }
 
-function getNodeRowItem(node) {
+//Node list functions
+function getNodeRowItem(node, nodeType) {
     //return "<div class='panel panel-default'><div class='panel-heading'><a>" + trader.$class + "</a><div class='pull-right'> Timestamp: " + trader.tradeId + " </div></div><div class='panel-body'>" + "" + "&emsp;<i class='fa fa-arrow-right' aria-hidden='true'></i>&emsp;"
       //  + "" + "&emsp;" + "<div class='btn btn-danger pull-right'>" + trader.firstName + "&emsp;" + trader.lastName + "</div></div></div>";
     return "  <tr>\n" +
-        "<td>" + node.name + "</td>\n" +
-        "<td>" + node.hash + "</td>\n" +
-        "<td>" + node.ip + "</td>\n" +
-        "<td>" + node.status + "</td>\n" +
-        "<td>" + node.css + "</td>\n" +
+        "<td>" + node.NodeName + "</td>\n" +
+        "<td>" + node.NodeID + "</td>\n" +
+        "<td>" + node.NodeStatus + "</td>\n" +
+        "<td>" + nodeType + "</td>\n" +
         "</tr>"
+}
+
+function getNodeAllRows(data){
+    var html = "";
+    var peerNodeList = data.PeerNodes;
+    var orderNodesList = data.OrderNodes;
+    // if(data.length >0){
+    //     for(var i = 0; i<data.length; i++){
+    //         html += getNodeRowItem(data[i]);
+    //     }
+    // }
+    if(peerNodeList.length >0){
+        for(var i = 0; i<peerNodeList.length; i++){
+            html += getNodeRowItem(peerNodeList[i], "Peer");
+        }
+    }
+    if(orderNodesList.length >0){
+        for(var j = 0; j<orderNodesList.length; j++){
+            html += getNodeRowItem(orderNodesList[j], "Order");
+        }
+    }
+
+    return html;
 }
 
 function getNodeHeadItem() {
@@ -236,10 +297,9 @@ function getNodeHeadItem() {
         "<thead>\n" +
         "<tr>\n" +
         "<th>Name</th>\n" +
-        "<th>Hash</th>\n" +
-        "<th>IP</th>\n" +
+        "<th>ID</th>\n" +
         "<th>Status</th>\n" +
-        "<th>CSS grade</th>\n" +
+        "<th>Type</th>\n" +
         "</tr>\n" +
         "</thead>\n" +
         "<tbody>"
@@ -249,13 +309,47 @@ function getNodeTailItem() {
     return "</tbody></table>"
 }
 
+function nodeAndNetworkOnPageReady(){
+    var $table = $('#collapse4_table');
+    var html = getNodeHeadItem();
+    var nodelist = JSON.parse(localStorage.getItem("NodeList"));
+    html += getNodeAllRows(nodelist);
+    html += getNodeTailItem();
+    $table.append(html);
+
+      // $.ajax({
+      //     url: "http://182.61.49.216:8081/getAllNodes",
+      //     type:'get',
+      //     dataType: 'json',
+      //     jsonp: "callback",
+      //     //data: data,
+      //     success: function(result){
+      //         html += getNodeAllRows(result);
+      //         html += getNodeTailItem();
+      //         $table.append(html);
+      //     },
+      // });
+
+}
+
+function submitTransactionOnPageReady(){
+    var nodeIdList = getNodeNameList();//getNodeNameList
+    var html = "";
+    for(var i=0;i<nodeIdList.length;i++){
+        html += "<option>" + nodeIdList[i] + "</option>";
+    }
+
+    $('#submitTrans_broker').append(html);
+}
+
+
 //data: JSON array of trader data
 function updateTraderDataHtml(data){
     //$('#chainreportpnl')
     $('#chainreportpnl').empty();
     var html = "";
     if(data.length==0){
-        html += "<h4>No data available.</h4>>";
+        html += "<h4>No data available.</h4>";
     }
     else {
         for(var i=0; i<data.length; i++){
@@ -265,6 +359,20 @@ function updateTraderDataHtml(data){
     $('#chainreportpnl').append(html);
 }
 
+//get trade data
+$(document).on('click','#btnGetTradeData',function(){
+    $.ajax({
+        url: "http://192.168.0.112:3000/api/Trader",
+        type:'get',
+        //data: data,
+        success: function(result){
+            updateTraderDataHtml(result);
+        },
+        //dataType: 'JSON'
+    });
+});
+
+//submit new transaction
 $(document).on('click', '#btnSubmitTransaction', function () {
     var broker = $('#submitTrans_broker').val();
     var asset = $('#submitTrans_asset').val();
@@ -274,6 +382,6 @@ $(document).on('click', '#btnSubmitTransaction', function () {
     var hash = "afb260c6dcdb5b85c2cda26766934363d0b26bbea8f9d486df4413ef0684574d";
     data.push({ "hash": hash, "from": "Citi", "to": broker, "asset": asset, "amount": amount, "timestamp": timestamp });
     localStorage.setItem("chaindata", JSON.stringify(data));
-    // bootbox.confirm("Transaction submitted successfully.", function () { });
-    alert("Transaction submitted successfully.");
+    bootbox.alert("<i class='fa fa-3x fa-check-circle-o' style='color:green'></i>&emsp;Transaction submitted successfully.", function () { });
+    //alert("Transaction submitted successfully.");
 });
