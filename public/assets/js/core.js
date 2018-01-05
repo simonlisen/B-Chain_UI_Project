@@ -206,11 +206,11 @@
 
 //b-chain js code
 
-var chainReportJson = [{ "hash": "449d677056d2a18657652d9eb3 9084e98e286849cebb1ddf32b6d3efae010a05", "from": "Citi", "to": "BrokerA", "asset": "TSLA", "amount": 99, "timestamp": " 2017-11-10 08:09:04.423" },
-    { "hash": "437adf08b5720827c8aebb0904c45f96f3fac3f164d260d0af3764b247ecb527", "from": "Citi", "to": "BrokerB", "asset": "ATVI", "amount": 199, "timestamp": " 2017-11-11 01:20:04.423" },
-    { "hash": "afb260c6dcdb5b85c2cda26766934363d0b26bbea8f9d486df4413ef0684574d", "from": "Citi", "to": "BrokerC", "asset": "C", "amount": 299, "timestamp": " 2017-11-12 12:10:0.423" }];
+var chainReportJson = [{ "hash": "22222", "from": "Citi", "to": "BrokerA", "asset": "TSLA", "amount": 99, "timestamp": " 2017-11-10 08:09:04.423" },
+    { "hash": "24434", "from": "Citi", "to": "BrokerB", "asset": "ATVI", "amount": 199, "timestamp": " 2017-11-11 01:20:04.423" },
+    { "hash": "43523", "from": "Citi", "to": "BrokerC", "asset": "C", "amount": 299, "timestamp": " 2017-11-12 12:10:0.423" }];
 
-var clientJson = [{ "clientName": "CITI ADMINISTRATION", "clientId": "20180000", "clientType": "Admin", "clientStatus":"Active", "Currency": "USD", "SkAccountNumber": "348912452", "Asset": ""},
+var clientJson = [{ "clientName": "CITI ADMINISTRATION", "clientId": "AD000001", "clientType": "Admin", "clientStatus":"Active", "Currency": "USD", "SkAccountNumber": "348912452", "Asset": ""},
     { "clientName": "THE GREENWALL FOUNDATION", "clientId": "20180001", "clientType": "Regular", "clientStatus":"Active", "Currency": "USD", "SkAccountNumber": "348912975", "Asset": ""},
     { "clientName": "SOLAR CAPITAL LTD", "clientId": "20180002", "clientType": "Regular", "clientStatus":"Active", "Currency": "USD", "SkAccountNumber": "348912325", "Asset": ""},
     { "clientName": "PFPC-DFA FUNDS-IRISH", "clientId": "20180003", "clientType": "Regular", "clientStatus":"Active", "Currency": "USD", "SkAccountNumber": "348912345", "Asset": ""},
@@ -222,6 +222,28 @@ var clientJson = [{ "clientName": "CITI ADMINISTRATION", "clientId": "20180000",
     { "clientName": "SBAM NY (WTC)", "clientId": "20180009", "clientType": "Regular", "clientStatus":"Closed", "Currency": "USD", "SkAccountNumber": "348912704", "Asset": ""},
     { "clientName": "CREDIT Suisse", "clientId": "20180010", "clientType": "Regular", "clientStatus":"Active", "Currency": "USD", "SkAccountNumber": "348912860", "Asset": ""},
     { "clientName": "VOT-FI Roma Multi", "clientId": "20180011", "clientType": "Regular", "clientStatus":"Active", "Currency": "EUR", "SkAccountNumber": "348912235", "Asset": ""}];
+
+var nodeJson = [{ "name": "peer0.org1.example.com", "id": "PR_00001", "status": "Active", "type": "Peer" },
+    { "name": "peer0.org2.example.com", "id": "PR_00002", "status": "Active", "type": "Peer" },
+    { "name": "peer0.org3.example.com", "id": "PR_00003", "status": "Active", "type": "Peer" },
+    { "name": "peer0.org4.example.com", "id": "PR_00004", "status": "Active", "type": "Peer" },
+    { "name": "peer0.org5.example.com", "id": "PR_00005", "status": "Active", "type": "Peer" },
+    { "name": "peer0.org6.example.com", "id": "PR_00006", "status": "Closed", "type": "Peer" },
+    { "name": "peer0.org7.example.com", "id": "PR_00007", "status": "Closed", "type": "Peer" },
+    { "name": "hyperledger/fabric-orderer-01", "id": "OD_00001", "status": "Active", "type": "Order" },
+    { "name": "hyperledger/fabric-orderer-02", "id": "OD_00002", "status": "Active", "type": "Order" },
+    { "name": "hyperledger/fabric-orderer-03", "id": "OD_00003", "status": "Active", "type": "Order" }];
+
+function generateHashString(len) {
+    len = len || 64;
+    var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz1234567890';
+    var maxPos = $chars.length;
+    var pwd = '';
+    for (var i = 0; i < len; i++) {
+        pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+    }
+    return pwd;
+}
 
 function getClientById(clientId){
     var result ={};
@@ -300,32 +322,33 @@ function getNodeRowItem(node, nodeType) {
     //return "<div class='panel panel-default'><div class='panel-heading'><a>" + trader.$class + "</a><div class='pull-right'> Timestamp: " + trader.tradeId + " </div></div><div class='panel-body'>" + "" + "&emsp;<i class='fa fa-arrow-right' aria-hidden='true'></i>&emsp;"
       //  + "" + "&emsp;" + "<div class='btn btn-danger pull-right'>" + trader.firstName + "&emsp;" + trader.lastName + "</div></div></div>";
     return "  <tr>\n" +
-        "<td>" + node.NodeName + "</td>\n" +
-        "<td>" + node.NodeID + "</td>\n" +
-        "<td>" + node.NodeStatus + "</td>\n" +
-        "<td>" + nodeType + "</td>\n" +
+        "<td>" + node.name + "</td>\n" +
+        "<td>" + node.id + "</td>\n" +
+        "<td>" + node.status + "</td>\n" +
+        "<td>" + node.type + "</td>\n" +
         "</tr>"
 }
 
 function getNodeAllRows(data){
     var html = "";
-    var peerNodeList = data.PeerNodes;
-    var orderNodesList = data.OrderNodes;
-    // if(data.length >0){
-    //     for(var i = 0; i<data.length; i++){
-    //         html += getNodeRowItem(data[i]);
+
+    // var peerNodeList = data.PeerNodes;
+    // var orderNodesList = data.OrderNodes;
+    if(data.length >0){
+        for(var i = 0; i<data.length; i++){
+            html += getNodeRowItem(data[i]);
+        }
+    }
+    // if(peerNodeList.length >0){
+    //     for(var i = 0; i<peerNodeList.length; i++){
+    //         html += getNodeRowItem(peerNodeList[i], "Peer");
     //     }
     // }
-    if(peerNodeList.length >0){
-        for(var i = 0; i<peerNodeList.length; i++){
-            html += getNodeRowItem(peerNodeList[i], "Peer");
-        }
-    }
-    if(orderNodesList.length >0){
-        for(var j = 0; j<orderNodesList.length; j++){
-            html += getNodeRowItem(orderNodesList[j], "Order");
-        }
-    }
+    // if(orderNodesList.length >0){
+    //     for(var j = 0; j<orderNodesList.length; j++){
+    //         html += getNodeRowItem(orderNodesList[j], "Order");
+    //     }
+    // }
 
     return html;
 }
@@ -350,8 +373,9 @@ function getNodeTailItem() {
 function nodeAndNetworkOnPageReady(){
     var $table = $('#collapse4_table');
     var html = getNodeHeadItem();
-    var nodelist = JSON.parse(localStorage.getItem("NodeList"));
-    html += getNodeAllRows(nodelist);
+    //var nodelist = JSON.parse(localStorage.getItem("NodeList"));
+    //var nodelist = nodeJson;
+    html += getNodeAllRows(nodeJson);
     html += getNodeTailItem();
     $table.append(html);
 
@@ -373,9 +397,14 @@ function nodeAndNetworkOnPageReady(){
 function submitTransactionOnPageReady(){
     var nodeIdList = getNodeNameList();//getNodeNameList
     var html = "";
-    for(var i=0;i<nodeIdList.length;i++){
-        html += "<option>" + nodeIdList[i] + "</option>";
+    if(clientJson.length >0){ //clientName
+        for(var i = 0; i<clientJson.length; i++){
+            html += "<option>" + clientJson[i].clientId + " - " + clientJson[i].clientName + "</option>";
+        }
     }
+    // for(var i=0;i<nodeIdList.length;i++){
+    //     html += "<option>" + nodeIdList[i] + "</option>";
+    // }
 
     $('#submitTrans_broker').append(html);
 }
@@ -417,7 +446,7 @@ $(document).on('click', '#btnSubmitTransaction', function () {
     var amount = $('#submitTrans_amount').val();
     var timestamp = new Date();
     var data = JSON.parse(localStorage.getItem("chaindata"));
-    var hash = "afb260c6dcdb5b85c2cda26766934363d0b26bbea8f9d486df4413ef0684574d";
+    var hash = generateHashString();
     data.push({ "hash": hash, "from": "Citi", "to": broker, "asset": asset, "amount": amount, "timestamp": timestamp });
     localStorage.setItem("chaindata", JSON.stringify(data));
     bootbox.alert("<i class='fa fa-2x fa-check-circle-o' style='color:green'></i>&emsp;Transaction submitted successfully.", function () { });
@@ -459,5 +488,8 @@ function dashboardOnReady(){
     var client = JSON.parse(localStorage.getItem("loggedInClient"));
     $('#clientnameheader').prepend(client.clientName);
     $('#clienttypetext').prepend(client.clientType + " Account");
+    $('#db_clientId').prepend(client.clientId);
+    $('#db_numberOfAssets').prepend("5");
+    $('#db_status').prepend(client.clientStatus);
 
 }
