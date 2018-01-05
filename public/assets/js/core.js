@@ -206,9 +206,9 @@
 
 //b-chain js code
 
-var chainReportJson = [{ "hash": "22222", "from": "Citi", "to": "BrokerA", "asset": "TSLA", "amount": 99, "timestamp": " 2017-11-10 08:09:04.423" },
-    { "hash": "24434", "from": "Citi", "to": "BrokerB", "asset": "ATVI", "amount": 199, "timestamp": " 2017-11-11 01:20:04.423" },
-    { "hash": "43523", "from": "Citi", "to": "BrokerC", "asset": "C", "amount": 299, "timestamp": " 2017-11-12 12:10:0.423" }];
+var chainReportJson = [{ "hash": "22222", "from": "Citi", "to": "SOLAR CAPITAL LTD", "asset": "TSLA", "amount": 99, "timestamp": " 2017-11-10 08:09:04.423" },
+    { "hash": "24434", "from": "UBS", "to": "SBAM NY (WTC)", "asset": "ATVI", "amount": 199, "timestamp": " 2017-11-11 01:20:04.423" },
+    { "hash": "43523", "from": "JOHN HANCOCK FUNDS", "to": "ORBIS GROUP", "asset": "C", "amount": 299, "timestamp": " 2017-11-12 12:10:0.423" }];
 
 var clientJson = [{ "clientName": "CITI ADMINISTRATION", "clientId": "AD000001", "clientType": "Admin", "clientStatus":"Active", "Currency": "USD", "SkAccountNumber": "348912452", "Asset": ""},
     { "clientName": "THE GREENWALL FOUNDATION", "clientId": "20180001", "clientType": "Regular", "clientStatus":"Active", "Currency": "USD", "SkAccountNumber": "348912975", "Asset": ""},
@@ -236,7 +236,7 @@ var nodeJson = [{ "name": "peer0.org1.example.com", "id": "PR_00001", "status": 
 
 function generateHashString(len) {
     len = len || 64;
-    var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz1234567890';
+    var $chars = 'abcdef1234567890';
     var maxPos = $chars.length;
     var pwd = '';
     for (var i = 0; i < len; i++) {
@@ -399,7 +399,7 @@ function submitTransactionOnPageReady(){
     var html = "";
     if(clientJson.length >0){ //clientName
         for(var i = 0; i<clientJson.length; i++){
-            html += "<option>" + clientJson[i].clientId + " - " + clientJson[i].clientName + "</option>";
+            html += "<option value='" + clientJson[i].clientName + "'>" + clientJson[i].clientId + " - " + clientJson[i].clientName + "</option>";
         }
     }
     // for(var i=0;i<nodeIdList.length;i++){
@@ -446,8 +446,11 @@ $(document).on('click', '#btnSubmitTransaction', function () {
     var amount = $('#submitTrans_amount').val();
     var timestamp = new Date();
     var data = JSON.parse(localStorage.getItem("chaindata"));
+    if(!data){
+        data = [];
+    }
     var hash = generateHashString();
-    data.push({ "hash": hash, "from": "Citi", "to": broker, "asset": asset, "amount": amount, "timestamp": timestamp });
+    data.push({ "hash": hash, "from": getCurrentUser().clientName, "to": broker, "asset": asset, "amount": amount, "timestamp": timestamp });
     localStorage.setItem("chaindata", JSON.stringify(data));
     bootbox.alert("<i class='fa fa-2x fa-check-circle-o' style='color:green'></i>&emsp;Transaction submitted successfully.", function () { });
     //alert("Transaction submitted successfully.");
@@ -492,4 +495,15 @@ function dashboardOnReady(){
     $('#db_numberOfAssets').prepend("5");
     $('#db_status').prepend(client.clientStatus);
 
+}
+
+function getCurrentUser(){
+    return JSON.parse(localStorage.getItem("loggedInClient"));
+}
+
+function initAccountDisplay(){
+    var client = JSON.parse(localStorage.getItem("loggedInClient"));
+    $('h5.media-heading').append(client.clientName);
+    $('#left-status a').append(client.clientType + " Account");
+    $('#left-lastaccess').append(new Date().toDateString());
 }

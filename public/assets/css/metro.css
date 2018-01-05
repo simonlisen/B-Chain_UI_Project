@@ -1,14 +1,14 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  height: 100%;
-}
-html,
-body,
-* {
-  box-sizing: border-box;
-}
+/*html,*/
+/*body {*/
+  /*padding: 0;*/
+  /*margin: 0;*/
+  /*height: 100%;*/
+/*}*/
+/*html,*/
+/*body,*/
+/** {*/
+  /*box-sizing: border-box;*/
+/*}*/
 article,
 aside,
 details,
@@ -188,13 +188,13 @@ a {
 html {
   font-size: 100%;
 }
-body {
-  font-family: "Segoe UI", "Open Sans", sans-serif, serif;
-  font-size: 0.875rem;
-  line-height: 1.1;
-  font-weight: 400;
-  font-style: normal;
-}
+/*body {*/
+  /*font-family: "Segoe UI", "Open Sans", sans-serif, serif;*/
+  /*font-size: 0.875rem;*/
+  /*line-height: 1.1;*/
+  /*font-weight: 400;*/
+  /*font-style: normal;*/
+/*}*/
 #font .light {
   font-weight: 300;
   font-style: normal;
@@ -243,31 +243,31 @@ h3 {
 h4 {
   font: 500 1.125rem/1.1 "Segoe UI", "Open Sans", sans-serif, serif;
 }
-h5 {
-  font: 500 0.875rem/1.1 "Segoe UI", "Open Sans", sans-serif, serif;
-}
+/*h5 {*/
+  /*font: 500 0.875rem/1.1 "Segoe UI", "Open Sans", sans-serif, serif;*/
+/*}*/
 h6 {
   font: 500 0.75rem/1.1 "Segoe UI", "Open Sans", sans-serif, serif;
 }
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: .625rem 0;
-}
-h1 small,
-h2 small,
-h3 small,
-h4 small,
-h5 small,
-h6 small,
-h1 .small,
-h2 .small,
-h3 .small,
-h4 .small,
-h5 .small,
+/*h1,*/
+/*h2,*/
+/*h3,*/
+/*h4,*/
+/*h5,*/
+/*h6 {*/
+  /*margin: .625rem 0;*/
+/*}*/
+/*h1 small,*/
+/*h2 small,*/
+/*h3 small,*/
+/*h4 small,*/
+/*h5 small,*/
+/*h6 small,*/
+/*h1 .small,*/
+/*h2 .small,*/
+/*h3 .small,*/
+/*h4 .small,*/
+/*h5 .small,*/
 h6 .small {
   font-weight: 400;
   font-size: .7em;
@@ -421,10 +421,10 @@ ul,
 ol {
   margin-left: .3125rem;
 }
-ul li,
-ol li {
-  line-height: 1.25rem;
-}
+/*ul li,*/
+/*ol li {*/
+  /*line-height: 1.25rem;*/
+/*}*/
 ul li ul,
 ol li ul,
 ul li ol,
@@ -15655,9 +15655,9 @@ video::-webkit-media-controls-enclosure {
 .fg-dark {
   color: #1d1d1d !important;
 }
-.bg-dark {
-  background-color: #1d1d1d !important;
-}
+/*.bg-dark {*/
+  /*background-color: #1d1d1d !important;*/
+/*}*/
 .fg-darkBrown {
   color: #63362f !important;
 }

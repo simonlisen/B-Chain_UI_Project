@@ -175,15 +175,15 @@
                             <div class="user-wrapper bg-dark">
                                 <a class="user-link" href="">
                                     <img class="media-object img-thumbnail user-img" alt="User Picture" src="assets/img/user_citi.png">
-                                    <span class="label label-danger user-label">16</span>
+                                    <!--<span class="label label-danger user-label">16</span>-->
                                 </a>
-                        
+
                                 <div class="media-body">
-                                    <h5 class="media-heading">Citi</h5>
+                                    <h5 class="media-heading"></h5>
                                     <ul class="list-unstyled user-info">
-                                        <li><a href="">Administrator</a></li>
+                                        <li id="left-status"><a href=""></a></li>
                                         <li>Last Access : <br>
-                                            <small><i class="fa fa-calendar"></i>&nbsp;16 Mar 16:32</small>
+                                            <small id="left-lastaccess"><i class="fa fa-calendar"></i>&nbsp;</small>
                                         </li>
                                     </ul>
                                 </div>
@@ -369,13 +369,19 @@
                 <script>
                     $(function() {
                         Metis.metisSortable();
-                        var chain = localStorage.chaindata;
+                        initAccountDisplay();
+                       // var chain = localStorage.chaindata;
                         var chain = JSON.parse(localStorage.getItem("chaindata"));
-                        for (var i = chain.length - 1; i >= 0; i--) {
-                            var item = chain[i];
-                            //chainreportpnl.append(getChainReportItem(item.from, item.to, item.asset, item.amount));
-                            $('#chainreportpnl').append(getChainReportItem(item.hash, item.from, item.to, item.asset, item.amount, item.timestamp));
+                        if(chain && chain.length > 0){
+                            $('#chainreportpnl').empty();
+                            for (var i = chain.length - 1; i >= 0; i--) {
+                                var item = chain[i];
+                                $('#chainreportpnl').append(getChainReportItem(item.hash, item.from, item.to, item.asset, item.amount, item.timestamp));
+                            }
+                        }else{
+                            $('#chainreportpnl').append("No data available.");
                         }
+
                     });
 
 
