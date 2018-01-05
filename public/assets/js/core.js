@@ -206,6 +206,44 @@
 
 //b-chain js code
 
+var chainReportJson = [{ "hash": "449d677056d2a18657652d9eb3 9084e98e286849cebb1ddf32b6d3efae010a05", "from": "Citi", "to": "BrokerA", "asset": "TSLA", "amount": 99, "timestamp": " 2017-11-10 08:09:04.423" },
+    { "hash": "437adf08b5720827c8aebb0904c45f96f3fac3f164d260d0af3764b247ecb527", "from": "Citi", "to": "BrokerB", "asset": "ATVI", "amount": 199, "timestamp": " 2017-11-11 01:20:04.423" },
+    { "hash": "afb260c6dcdb5b85c2cda26766934363d0b26bbea8f9d486df4413ef0684574d", "from": "Citi", "to": "BrokerC", "asset": "C", "amount": 299, "timestamp": " 2017-11-12 12:10:0.423" }];
+
+var clientJson = [{ "clientName": "CITI ADMINISTRATION", "clientId": "20180000", "clientType": "Admin", "clientStatus":"Active", "Currency": "USD", "SkAccountNumber": "348912452", "Asset": ""},
+    { "clientName": "THE GREENWALL FOUNDATION", "clientId": "20180001", "clientType": "Regular", "clientStatus":"Active", "Currency": "USD", "SkAccountNumber": "348912975", "Asset": ""},
+    { "clientName": "SOLAR CAPITAL LTD", "clientId": "20180002", "clientType": "Regular", "clientStatus":"Active", "Currency": "USD", "SkAccountNumber": "348912325", "Asset": ""},
+    { "clientName": "PFPC-DFA FUNDS-IRISH", "clientId": "20180003", "clientType": "Regular", "clientStatus":"Active", "Currency": "USD", "SkAccountNumber": "348912345", "Asset": ""},
+    { "clientName": "ORBIS GROUP", "clientId": "20180004", "clientType": "Regular", "clientStatus":"Active", "Currency": "USD", "SkAccountNumber": "348912790", "Asset": ""},
+    { "clientName": "JOHN HANCOCK FUNDS", "clientId": "20180005", "clientType": "Regular", "clientStatus":"Active", "Currency": "USD", "SkAccountNumber": "348912964", "Asset": ""},
+    { "clientName": "TARPON INSTITUTIONAL FIA", "clientId": "20180006", "clientType": "Regular", "clientStatus":"Active", "Currency": "USD", "SkAccountNumber": "348912467", "Asset": ""},
+    { "clientName": "UBS", "clientId": "20180007", "clientType": "Regular", "clientStatus":"Active", "Currency": "USD", "SkAccountNumber": "348912702", "Asset": ""},
+    { "clientName": "ACTIVA SICAV FUND", "clientId": "20180008", "clientType": "Regular", "clientStatus":"Active", "Currency": "EUR", "SkAccountNumber": "348912896", "Asset": ""},
+    { "clientName": "SBAM NY (WTC)", "clientId": "20180009", "clientType": "Regular", "clientStatus":"Closed", "Currency": "USD", "SkAccountNumber": "348912704", "Asset": ""},
+    { "clientName": "CREDIT Suisse", "clientId": "20180010", "clientType": "Regular", "clientStatus":"Active", "Currency": "USD", "SkAccountNumber": "348912860", "Asset": ""},
+    { "clientName": "VOT-FI Roma Multi", "clientId": "20180011", "clientType": "Regular", "clientStatus":"Active", "Currency": "EUR", "SkAccountNumber": "348912235", "Asset": ""}];
+
+function getClientById(clientId){
+    var result ={};
+    if(clientJson.length >0){
+        for(var i = 0; i<clientJson.length; i++){
+            if(clientJson[i].clientId === clientId){
+                result = clientJson[i];
+            }
+        }
+    }
+    return result;
+}
+
+function getClientIdList(){
+    var result =[];
+    if(clientJson.length >0){
+        for(var i = 0; i<clientJson.length; i++){
+            result.push(clientJson[i].clientId);
+        }
+    }
+    return result;
+}
 
 function getNodeIdList(){
     var nodelist = JSON.parse(localStorage.getItem("NodeList"));//JSON.parse(str);
@@ -400,9 +438,9 @@ function cacheNodeListOnLogin(){
 
 //submit new transaction
 $(document).on('click', '#btnLoginSubmit', function (event) {
-    debugger;
     event.preventDefault();
-    var nodeIdList = getNodeIdList();//getNodeIdList
+    //var nodeIdList = getNodeIdList();//getNodeIdList
+    var nodeIdList = getClientIdList();
     var inputId = $('#txtLoginId').val();
     if($.inArray(inputId, nodeIdList) == -1){//not match
         bootbox.alert("<i class='fa fa-2x fa-times-circle' style='color:red'></i>&emsp;Invalid ID or Password. Please try again.", function () { });
@@ -411,7 +449,15 @@ $(document).on('click', '#btnLoginSubmit', function (event) {
         return false;
     }
     else{
+        localStorage.setItem("loggedInClient", JSON.stringify(getClientById(inputId)));
         window.location = "dashboard.html";
     }
 
 });
+
+function dashboardOnReady(){
+    var client = JSON.parse(localStorage.getItem("loggedInClient"));
+    $('#clientnameheader').prepend(client.clientName);
+    $('#clienttypetext').prepend(client.clientType + " Account");
+
+}
