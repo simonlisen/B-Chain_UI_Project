@@ -181,7 +181,7 @@
                             </div>
                             <div class="user-wrapper bg-dark">
                                 <a class="user-link" href="">
-                                    <img class="media-object img-thumbnail user-img" alt="User Picture" src="assets/img/user_citi.png">
+                                    <img id="portrait" class="media-object img-thumbnail user-img" alt="User Picture" src="assets/img/user_citi.png">
                                     <!--<span class="label label-danger user-label">16</span>-->
                                 </a>
                         
@@ -206,7 +206,7 @@
                                     </a>
                                   </li>
 
-                                  <li>
+                                  <li class="admin-only">
                                     <a href="table.html">
                                       <i class="fa fa-table"></i>
                                       <span class="link-title">Nodes & Network</span>
@@ -248,31 +248,119 @@
                                             </h5>
                                         </header>
                                         <div class="body">
-                    <div>
+                    <div class="col-lg-6">
                         <form class="form-horizontal">
+                            <br/>
                             <div class="form-group">
-                                <label class="control-label col-lg-2">Client ID</label>
-                                <div class="col-lg-4">
+                                <label class="control-label col-lg-4">Client ID</label>
+                                <div class="col-lg-8">
                                     <span id="db_clientId" class="form-control"></span>
                                 </div>
                             </div><!-- /.form-group -->
                             <div class="form-group">
-                                <label for="pass1" class="control-label col-lg-2">No of Assets</label>
-                                <div class="col-lg-4">
-                                    <span d="db_numberOfAssets" class="form-control"></span>
+                                <label class="control-label col-lg-4">Type</label>
+                                <div class="col-lg-8">
+                                    <span id="db_type" class="form-control"></span>
                                     <!--<input type="text" value="5" readonly="" class="form-control">-->
                                 </div>
                             </div><!-- /.form-group -->
                             <div class="form-group">
-                                <label class="control-label col-lg-2">Status</label>
-                                <div class="col-lg-4">
-                                    <span d="db_status" class="form-control"></span>
+                                <label class="control-label col-lg-4">Status</label>
+                                <div class="col-lg-8">
+                                    <span id="db_status" class="form-control"></span>
+                                    <!--<input type="text" value="Active" readonly="" class="form-control">-->
+                                </div>
+                            </div><!-- /.form-group -->
+                            <div class="form-group">
+                                <label class="control-label col-lg-4">Currency</label>
+                                <div class="col-lg-8">
+                                    <span id="db_currency" class="form-control"></span>
+                                    <!--<input type="text" value="Active" readonly="" class="form-control">-->
+                                </div>
+                            </div><!-- /.form-group -->
+                            <div class="form-group">
+                                <label class="control-label col-lg-4">Safekeeping Account Number</label>
+                                <div class="col-lg-8">
+                                    <span id="db_skaccount" class="form-control"></span>
                                     <!--<input type="text" value="Active" readonly="" class="form-control">-->
                                 </div>
                             </div><!-- /.form-group -->
 
                         </form>
                     </div>
+                                            <div class="col-lg-6">
+                                                <br/>
+                                                <label>My Assets</label>
+                                                <div id="asset-pnl" class="box">
+                                                    <div class="col-lg-4"></div>
+                                                    <div class="col-lg-1"></div>
+                                                    <div id="loading-indicator" class="col-lg-2" style="margin: auto">
+                                                        <br/>
+                                                        <br/>
+                                                        <br/>
+                                                        <img id="loading" class="" alt="Loading..." src="assets/img/loading indicator.gif">
+                                                        <h4>Loading...</h4>
+                                                    </div>
+                                                    <div class="col-lg-1"></div>
+                                                    <div class="col-lg-4"></div>
+                                                    <div class="body">
+                                                        <table class="table table-condensed table-hovered sortableTable tablesorter tablesorter-default" role="grid">
+                                                            <thead>
+                                                            <tr role="row" class="tablesorter-headerRow">
+                                                                <th data-column="0" class="tablesorter-header tablesorter-headerUnSorted" tabindex="0" scope="col" role="columnheader" aria-disabled="false" unselectable="on" aria-sort="none" aria-label="Country
+
+                          : No sort applied, activate to apply an ascending sort" style="user-select: none;"><div class="tablesorter-header-inner">Name
+                                                                    <i class="fa sort"></i>
+                                                                </div></th>
+                                                                <th data-column="1" class="tablesorter-header tablesorter-headerUnSorted" tabindex="0" scope="col" role="columnheader" aria-disabled="false" unselectable="on" aria-sort="none" aria-label="Visit
+
+                          : No sort applied, activate to apply an ascending sort" style="user-select: none;"><div class="tablesorter-header-inner">Quantity
+                                                                    <i class="fa sort"></i>
+                                                                </div></th>
+
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody aria-live="polite" aria-relevant="all">
+                                                            <tr class="active" role="row">
+                                                                <td>AMZN</td>
+                                                                <td>1126</td>
+
+                                                            </tr>
+                                                            <tr role="row">
+                                                                <td>C</td>
+                                                                <td>350</td>
+
+                                                            </tr>
+                                                            <tr class="danger" role="row">
+                                                                <td>GOOGL</td>
+                                                                <td>43</td>
+
+                                                            </tr>
+                                                            <tr class="warning" role="row">
+                                                                <td>TSLA</td>
+                                                                <td>547</td>
+
+                                                            </tr>
+                                                            <tr role="row">
+                                                                <td>BABA</td>
+                                                                <td>560</td>
+
+                                                            </tr>
+                                                            <tr role="row">
+                                                                <td>FB</td>
+                                                                <td>97</td>
+
+                                                            </tr>
+                                                            <tr class="success" role="row">
+                                                                <td>JPM</td>
+                                                                <td>2450</td>
+
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div><!-- /.col-lg-6 -->
@@ -281,22 +369,22 @@
 
                             <div class="row">
                                 <div class="body">
-                                    <div class="tile-wide bg-red">
-                                        <div class="tile-content iconic">
-                                            <span class="icon mif-tags"></span>
-                                            <span class="tile-label">My Asset</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="body">
-                                    <div class="tile-wide bg-green">
-                                        <div class="tile-content iconic">
-                                            <span class="icon mif-history"></span>
-                                            <span class="tile-label">Transaction History</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="body">
+                                    <!--<div class="tile-wide bg-red">-->
+                                        <!--<div class="tile-content iconic">-->
+                                            <!--<span class="icon mif-tags"></span>-->
+                                            <!--<span class="tile-label">My Asset</span>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="body">-->
+                                    <!--<div class="tile-wide bg-green">-->
+                                        <!--<div class="tile-content iconic">-->
+                                            <!--<span class="icon mif-history"></span>-->
+                                            <!--<span class="tile-label">Transaction History</span>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <div class="body admin-only">
                                     <a href="table.html">
                                         <div class="tile-wide bg-orange" >
                                             <div class="tile-content iconic">
@@ -308,7 +396,7 @@
                                 </div>
                                 <div class="body">
                                     <a href="typography.html">
-                                    <div class="tile-wide bg-blue">
+                                    <div class="tile-wide bg-red">
                                         <div class="tile-content iconic">
                                             <span class="icon mif-shuffle"></span>
                                             <span class="tile-label">Submit Transaction</span>
@@ -318,7 +406,7 @@
                                 </div>
                                 <div class="body">
                                     <a href="table.html">
-                                    <div class="tile-wide bg-black">
+                                    <div class="tile-wide bg-green">
                                         <div class="tile-content iconic">
                                             <span class="icon mif-insert-template"></span>
                                             <span class="tile-label">Chain Report</span>

@@ -491,14 +491,37 @@ function dashboardOnReady(){
     var client = JSON.parse(localStorage.getItem("loggedInClient"));
     $('#clientnameheader').prepend(client.clientName);
     $('#clienttypetext').prepend(client.clientType + " Account");
-    $('#db_clientId').prepend(client.clientId);
-    $('#db_numberOfAssets').prepend("5");
-    $('#db_status').prepend(client.clientStatus);
 
+    $('#db_clientId').prepend(client.clientId);
+    $('#db_type').prepend(client.clientType);
+    $('#db_status').prepend(client.clientStatus);
+    $('#db_currency').prepend(client.Currency);
+    $('#db_skaccount').prepend(client.SkAccountNumber);
 }
 
 function getCurrentUser(){
     return JSON.parse(localStorage.getItem("loggedInClient"));
+}
+
+function getAssetTableHtml(){
+    var html = "<div class=\"body\">\n" +
+        "                                                        <table class=\"table table-condensed table-hovered sortableTable tablesorter tablesorter-default\" role=\"grid\">\n" +
+        "                                                            <thead>\n" +
+        "                                                            <tr role=\"row\" class=\"tablesorter-headerRow\">\n" +
+        "                                                                <th data-column=\"0\" class=\"tablesorter-header tablesorter-headerUnSorted\" tabindex=\"0\" scope=\"col\" role=\"columnheader\" aria-disabled=\"false\" unselectable=\"on\" aria-sort=\"none\" aria-label=\"Country\n" +
+        "\n" +
+        "                          : No sort applied, activate to apply an ascending sort\" style=\"user-select: none;\"><div class=\"tablesorter-header-inner\">Name\n" +
+        "                                                                    <i class=\"fa sort\"></i>\n" +
+        "                                                                </div></th>\n" +
+        "                                                                <th data-column=\"1\" class=\"tablesorter-header tablesorter-headerUnSorted\" tabindex=\"0\" scope=\"col\" role=\"columnheader\" aria-disabled=\"false\" unselectable=\"on\" aria-sort=\"none\" aria-label=\"Visit\n" +
+        "\n" +
+        "                          : No sort applied, activate to apply an ascending sort\" style=\"user-select: none;\"><div class=\"tablesorter-header-inner\">Quantity\n" +
+        "                                                                    <i class=\"fa sort\"></i>\n" +
+        "                                                                </div></th>\n" +
+        "\n" +
+        "                                                            </tr>\n" +
+        "                                                            </thead>\n" +
+        "                                                            <tbody aria-live=\"polite\" aria-relevant=\"all\">";
 }
 
 function initAccountDisplay(){
@@ -506,4 +529,12 @@ function initAccountDisplay(){
     $('h5.media-heading').append(client.clientName);
     $('#left-status a').append(client.clientType + " Account");
     $('#left-lastaccess').append(new Date().toDateString());
+    if(client.clientType == "Regular"){
+        $('#portrait').attr("src", "assets/img/user_regular.png")
+        $('.admin-only').hide();
+    }
+    if(client.clientType == "Admin"){
+
+    }
+
 }

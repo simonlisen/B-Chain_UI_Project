@@ -199,7 +199,7 @@
                                     </a>
                                   </li>
 
-                                  <li>
+                                  <li class="admin-only">
                                     <a href="table.html">
                                       <i class="fa fa-table"></i>
                                       <span class="link-title">Nodes & Network</span>
@@ -375,7 +375,14 @@
                         if(chain && chain.length > 0){
                             $('#chainreportpnl').empty();
                             for (var i = chain.length - 1; i >= 0; i--) {
+                                var client = JSON.parse(localStorage.getItem("loggedInClient"));
                                 var item = chain[i];
+                                if(client.clientType == "Regular"){
+                                    //check for regular account
+                                    if(client.clientName != item.from && client.clientName != item.to){
+                                        continue;
+                                    }
+                                }
                                 $('#chainreportpnl').append(getChainReportItem(item.hash, item.from, item.to, item.asset, item.amount, item.timestamp));
                             }
                         }else{
@@ -391,3 +398,4 @@
         </body>
 
 </html>
+
