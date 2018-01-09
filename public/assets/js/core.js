@@ -508,8 +508,6 @@ function getCurrentUser(){
 }
 
 function submitTransactionOnPageReady(){
-    var client = getCurrentUser();
-    //var nodeIdList = getNodeNameList();//getNodeNameList
     var clientList = getClientList();
     var html = "";
     if(clientList.length >0){ //clientName
@@ -518,17 +516,30 @@ function submitTransactionOnPageReady(){
         }
     }
     $('#submitTrans_broker').append(html);
+    updateAssetDropDown();
+}
 
+function updateAssetDropDown(){
+    $.blockUI({ message: '<h3><img src="assets/img/loading indicator.gif" />&emsp; Loading assets list...</h3>' });
     var html2 = "";
-    if(client.Record.Asset.length >0){ //clientName
-        for(var i = 0; i<client.Record.Asset.length; i++){
-            // html2 += "<option value='" + client.Record.Asset[i].AssetID + "'>" + client.Record.Asset[i].AssetID + " - " + client.Record.Asset[i].AssetName
-            //      + " (Current: " + client.Record.Asset[i].AssetAmount + ")</option>";
-            html2 += "<option value='" + client.Record.Asset[i].AssetID + "'>" + client.Record.Asset[i].AssetID + " - " + client.Record.Asset[i].AssetName
-                + "</option>";
+    var client = JSON.parse(localStorage.getItem("loggedInClient"));
+    $.ajax({
+        url: "http://182.61.49.216:8081/queryFunc2?funcName='queryClientInfo'&argments='" + client.Key + "'",
+        type:'get',
+        success: function(result){
+            $('#submitTrans_asset').empty();
+            var assetList = JSON.parse(toDataString(result)).Asset;
+            if(assetList.length >0){
+                for(var i = 0; i<assetList.length; i++){
+                    html2 += "<option value='" + assetList[i].AssetID + "'>" + assetList[i].AssetID + " - " + assetList[i].AssetName
+                        + " ( Current: " + assetList[i].AssetAmount +  ") </option>";
+                }
+            }
+            $.unblockUI();
+            $('#submitTrans_asset').append(html2);
         }
-    }
-    $('#submitTrans_asset').append(html2);
+    });
+    $.unblockUI();
 }
 
 //submit new transaction
@@ -554,6 +565,7 @@ $(document).on('click', '#btnSubmitTransaction', function () {
             $.unblockUI();
             //localStorage.setItem("ClientList", JSON.stringify(toDataString(result)));
             bootbox.alert("<i class='fa fa-2x fa-check-circle-o' style='color:green'></i>&emsp;Transaction submitted successfully.", function () { });
+            updateAssetDropDown();
         }
     });
 
