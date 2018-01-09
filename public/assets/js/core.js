@@ -245,27 +245,7 @@ function generateHashString(len) {
     return pwd;
 }
 
-function getClientById(clientId){
-    var result ={};
-    if(clientJson.length >0){
-        for(var i = 0; i<clientJson.length; i++){
-            if(clientJson[i].clientId === clientId){
-                result = clientJson[i];
-            }
-        }
-    }
-    return result;
-}
 
-function getClientIdList(){
-    var result =[];
-    if(clientJson.length >0){
-        for(var i = 0; i<clientJson.length; i++){
-            result.push(clientJson[i].clientId);
-        }
-    }
-    return result;
-}
 
 function getNodeIdList(){
     var nodelist = JSON.parse(localStorage.getItem("NodeList"));//JSON.parse(str);
@@ -285,31 +265,7 @@ function getNodeIdList(){
     return result;
 }
 
-function getNodeNameList(){
-    var nodelist = JSON.parse(localStorage.getItem("NodeList"));
-    var peerNodeList = nodelist.PeerNodes;
-    var orderNodesList = nodelist.OrderNodes;
-    var result =[];
-    if(peerNodeList.length >0){
-        for(var i = 0; i<peerNodeList.length; i++){
-            result.push(peerNodeList[i].NodeName);
-        }
-    }
-    if(orderNodesList.length >0){
-        for(var j = 0; j<orderNodesList.length; j++){
-            result.push(orderNodesList[j].NodeName);
-        }
-    }
-    return result;
-}
 
-
-function getChainReportItem(hash, from, to, asset, amount, timestamp) {
-    //var hash = '449d677056d2a18657652d9eb39084e98e286849cebb1ddf32b6d3efae010a05';
-    return "<div class='panel panel-default'><div class='panel-heading'><a>" + hash + "</a><div class='pull-right'> Timestamp: " + timestamp + " </div></div><div class='panel-body'>" + "" + from + "&emsp;<i class='fa fa-arrow-right' aria-hidden='true'></i>&emsp;"
-        + to + "&emsp;" + "<div class='btn btn-danger pull-right'>" + amount + "&emsp;" + asset + "</div></div></div>";
-
-}
 
 function getTraderItem(trader) {
     return "<div class='panel panel-default'><div class='panel-heading'><a>" + trader.$class + "</a><div class='pull-right'> Timestamp: " + trader.tradeId + " </div></div><div class='panel-body'>" + "" + "&emsp;<i class='fa fa-arrow-right' aria-hidden='true'></i>&emsp;"
@@ -394,22 +350,6 @@ function nodeAndNetworkOnPageReady(){
 
 }
 
-function submitTransactionOnPageReady(){
-    var nodeIdList = getNodeNameList();//getNodeNameList
-    var html = "";
-    if(clientJson.length >0){ //clientName
-        for(var i = 0; i<clientJson.length; i++){
-            html += "<option value='" + clientJson[i].clientName + "'>" + clientJson[i].clientId + " - " + clientJson[i].clientName + "</option>";
-        }
-    }
-    // for(var i=0;i<nodeIdList.length;i++){
-    //     html += "<option>" + nodeIdList[i] + "</option>";
-    // }
-
-    $('#submitTrans_broker').append(html);
-}
-
-
 //data: JSON array of trader data
 function updateTraderDataHtml(data){
     //$('#chainreportpnl')
@@ -434,41 +374,35 @@ $(document).on('click','#btnGetTradeData',function(){
         //data: data,
         success: function(result){
             updateTraderDataHtml(result);
-        },
+        }
         //dataType: 'JSON'
     });
 });
 
-//submit new transaction
-$(document).on('click', '#btnSubmitTransaction', function () {
-    var broker = $('#submitTrans_broker').val();
-    var asset = $('#submitTrans_asset').val();
-    var amount = $('#submitTrans_amount').val();
-    var timestamp = new Date();
-    var data = JSON.parse(localStorage.getItem("chaindata"));
-    if(!data){
-        data = [];
-    }
-    var hash = generateHashString();
-    data.push({ "hash": hash, "from": getCurrentUser().clientName, "to": broker, "asset": asset, "amount": amount, "timestamp": timestamp });
-    localStorage.setItem("chaindata", JSON.stringify(data));
-    bootbox.alert("<i class='fa fa-2x fa-check-circle-o' style='color:green'></i>&emsp;Transaction submitted successfully.", function () { });
-    //alert("Transaction submitted successfully.");
-});
 
-function cacheNodeListOnLogin(){
+//cash all node info
+//localStorage.getItem("ClientList");
+function cacheClientListOnLogin(){
     $.ajax({
-        url: "http://182.61.49.216:8081/getAllNodes",
+        url: "http://182.61.49.216:8081/queryFunc2?funcName='queryAllAsset'&argments=''",
         type:'get',
-        dataType: 'json',
-        jsonp: "callback",
+        //dataType: 'text',
+       // jsonp: "callback",
         success: function(result){
-            localStorage.setItem("NodeList", JSON.stringify(result))
-        },
+            if(!localStorage.setItem("ClientList")){
+                localStorage.setItem("ClientList", JSON.stringify(toDataString(result)));
+                bootbox.alert("<i class='fa fa-2x fa-check-circle-o' style='color:green'></i>&emsp;System initialized successfully.", function () { });
+            }
+        }
     });
 }
 
-//submit new transaction
+function toDataString(str){
+    var arr = str.split("Response is ");
+    return arr[1];
+}
+
+//login user
 $(document).on('click', '#btnLoginSubmit', function (event) {
     event.preventDefault();
     //var nodeIdList = getNodeIdList();//getNodeIdList
@@ -482,54 +416,171 @@ $(document).on('click', '#btnLoginSubmit', function (event) {
     }
     else{
         localStorage.setItem("loggedInClient", JSON.stringify(getClientById(inputId)));
+        localStorage.setItem("loggedInClientId", inputId);
         window.location = "dashboard.html";
     }
 
 });
 
+
+
+function getClientList(){
+    return JSON.parse(JSON.parse(localStorage.getItem("ClientList")));
+}
+
+function getClientById(clientId){
+    var result ={};
+    var clientJson = getClientList();
+    if(clientJson.length >0){
+        for(var i = 0; i<clientJson.length; i++){
+            if(clientJson[i].Record.ClientID === clientId){
+                result = clientJson[i];
+            }
+        }
+    }
+    return result;
+}
+
+function getClientIdList(){
+    var result =[];
+    var clientJson = getClientList();
+    if(clientJson.length >0){
+        for(var i = 0; i<clientJson.length; i++){
+            result.push(clientJson[i].Record.ClientID);
+        }
+    }
+    return result;
+}
+
+
+
+//$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+
 function dashboardOnReady(){
     var client = JSON.parse(localStorage.getItem("loggedInClient"));
-    $('#clientnameheader').prepend(client.clientName);
-    $('#clienttypetext').prepend(client.clientType + " Account");
+    $('#clientnameheader').prepend(client.Record.Name);
+    $('#clienttypetext').prepend(client.Record.clientType + " Account");
 
-    $('#db_clientId').prepend(client.clientId);
-    $('#db_type').prepend(client.clientType);
-    $('#db_status').prepend(client.clientStatus);
-    $('#db_currency').prepend(client.Currency);
-    $('#db_skaccount').prepend(client.SkAccountNumber);
+    $('#db_clientId').prepend(client.Record.ClientID);
+    $('#db_type').prepend(client.Record.clientType);
+    $('#db_status').prepend(client.Record.Status);
+    $('#db_currency').prepend(client.Record.SkAccountNumber);
+    $('#db_skaccount').prepend(client.Record.Currency);
+
+    initAccountDisplay();
+    updateAssetTableHtml();
+}
+
+function updateAssetTableHtml(){
+    var html = '  <table class="table table-condensed table-hovered sortableTable tablesorter tablesorter-default" role="grid"><thead>\n' +
+        '                                                            <tr role="row" class="tablesorter-headerRow">\n' +
+        '                                                                <th class="tablesorter-header tablesorter-headerUnSorted"><div class="tablesorter-header-inner">Asset ID\n' +
+        '                                                                </div></th>\n' +
+        '                                                                <th class="tablesorter-header tablesorter-headerUnSorted"><div class="tablesorter-header-inner">Asset Symbol\n' +
+        '                                                                </div></th>\n' +
+        '                                                                <th class="tablesorter-header tablesorter-headerUnSorted"><div class="tablesorter-header-inner">Quantity\n' +
+        '                                                                </div></th>\n' +
+        '                                                            </tr></thead><tbody aria-live="polite" aria-relevant="all">';
+
+    var client = JSON.parse(localStorage.getItem("loggedInClient"));
+   // var client = {};
+    $.ajax({
+        url: "http://182.61.49.216:8081/queryFunc2?funcName='queryClientInfo'&argments='" + client.Key + "'",
+        type:'get',
+        success: function(result){
+            //JSON.stringify(toDataString(result))
+            var assetList = JSON.parse(toDataString(result)).Asset;
+            if(assetList.length >0){
+                for(var i = 0; i<assetList.length; i++){
+                    html += '<tr class=\"active\" role=\"row\"><td>' + assetList[i].AssetID + '</td><td>' + assetList[i].AssetName + '</td><td>' + assetList[i].AssetAmount + '</td></tr>';
+                }
+            }
+            html += '</tbody></table>';
+            $('#asset-pnl').html(html);
+        }
+    });
+
+
 }
 
 function getCurrentUser(){
     return JSON.parse(localStorage.getItem("loggedInClient"));
 }
 
-function getAssetTableHtml(){
-    var html = "<div class=\"body\">\n" +
-        "                                                        <table class=\"table table-condensed table-hovered sortableTable tablesorter tablesorter-default\" role=\"grid\">\n" +
-        "                                                            <thead>\n" +
-        "                                                            <tr role=\"row\" class=\"tablesorter-headerRow\">\n" +
-        "                                                                <th data-column=\"0\" class=\"tablesorter-header tablesorter-headerUnSorted\" tabindex=\"0\" scope=\"col\" role=\"columnheader\" aria-disabled=\"false\" unselectable=\"on\" aria-sort=\"none\" aria-label=\"Country\n" +
-        "\n" +
-        "                          : No sort applied, activate to apply an ascending sort\" style=\"user-select: none;\"><div class=\"tablesorter-header-inner\">Name\n" +
-        "                                                                    <i class=\"fa sort\"></i>\n" +
-        "                                                                </div></th>\n" +
-        "                                                                <th data-column=\"1\" class=\"tablesorter-header tablesorter-headerUnSorted\" tabindex=\"0\" scope=\"col\" role=\"columnheader\" aria-disabled=\"false\" unselectable=\"on\" aria-sort=\"none\" aria-label=\"Visit\n" +
-        "\n" +
-        "                          : No sort applied, activate to apply an ascending sort\" style=\"user-select: none;\"><div class=\"tablesorter-header-inner\">Quantity\n" +
-        "                                                                    <i class=\"fa sort\"></i>\n" +
-        "                                                                </div></th>\n" +
-        "\n" +
-        "                                                            </tr>\n" +
-        "                                                            </thead>\n" +
-        "                                                            <tbody aria-live=\"polite\" aria-relevant=\"all\">";
+function submitTransactionOnPageReady(){
+    var client = getCurrentUser();
+    //var nodeIdList = getNodeNameList();//getNodeNameList
+    var clientList = getClientList();
+    var html = "";
+    if(clientList.length >0){ //clientName
+        for(var i = 0; i<clientList.length; i++){
+            html += "<option value='" + clientList[i].Key + "'>" + clientList[i].Record.ClientID + " - " + clientList[i].Record.Name + "</option>";
+        }
+    }
+    $('#submitTrans_broker').append(html);
+
+    var html2 = "";
+    if(client.Record.Asset.length >0){ //clientName
+        for(var i = 0; i<client.Record.Asset.length; i++){
+            // html2 += "<option value='" + client.Record.Asset[i].AssetID + "'>" + client.Record.Asset[i].AssetID + " - " + client.Record.Asset[i].AssetName
+            //      + " (Current: " + client.Record.Asset[i].AssetAmount + ")</option>";
+            html2 += "<option value='" + client.Record.Asset[i].AssetID + "'>" + client.Record.Asset[i].AssetID + " - " + client.Record.Asset[i].AssetName
+                + "</option>";
+        }
+    }
+    $('#submitTrans_asset').append(html2);
+}
+
+//submit new transaction
+$(document).on('click', '#btnSubmitTransaction', function () {
+    var currentClient = getCurrentUser();
+    var from = currentClient.Key;
+    var to = $('#submitTrans_broker').val();
+    var asset = $('#submitTrans_asset').val();
+    var amount = $('#submitTrans_amount').val();
+    var timestamp = new Date();
+    // var data = JSON.parse(localStorage.getItem("chaindata"));
+    // if(!data){
+    //     data = [];
+    // }
+    // var hash = generateHashString();
+    // data.push({ "hash": hash, "from": getCurrentUser().clientName, "to": broker, "asset": asset, "amount": amount, "timestamp": timestamp });
+    //localStorage.setItem("chaindata", JSON.stringify(data));
+    $.ajax({
+        url: "http://182.61.49.216:8081/invokeFunc2?funcName='doInnerTransaction'&argments='" + from + "' '" + to + "' '" + asset + "' '" + amount + "'",
+        type:'get',
+        success: function(result){
+            //localStorage.setItem("ClientList", JSON.stringify(toDataString(result)));
+            bootbox.alert("<i class='fa fa-2x fa-check-circle-o' style='color:green'></i>&emsp;Transaction submitted successfully.", function () { });
+        }
+    });
+
+});
+
+function getNodeNameList(){
+    var nodelist = JSON.parse(localStorage.getItem("NodeList"));
+    var peerNodeList = nodelist.PeerNodes;
+    var orderNodesList = nodelist.OrderNodes;
+    var result =[];
+    if(peerNodeList.length >0){
+        for(var i = 0; i<peerNodeList.length; i++){
+            result.push(peerNodeList[i].NodeName);
+        }
+    }
+    if(orderNodesList.length >0){
+        for(var j = 0; j<orderNodesList.length; j++){
+            result.push(orderNodesList[j].NodeName);
+        }
+    }
+    return result;
 }
 
 function initAccountDisplay(){
-    var client = JSON.parse(localStorage.getItem("loggedInClient"));
-    $('h5.media-heading').append(client.clientName);
-    $('#left-status a').append(client.clientType + " Account");
+    var client = getCurrentUser();
+    $('h5.media-heading').append(client.Record.Name);
+    $('#left-status a').append(client.Record.clientType + " Account");
     $('#left-lastaccess').append(new Date().toDateString());
-    if(client.clientType == "Regular"){
+    if(client.Record.clientType == "Regular"){
         $('#portrait').attr("src", "assets/img/user_regular.png")
         $('.admin-only').hide();
     }
@@ -537,4 +588,49 @@ function initAccountDisplay(){
 
     }
 
+}
+
+function chainReportOnReady(){
+    $.ajax({
+        url: "http://182.61.49.216:8081/queryFunc2?funcName='queryTransactions'&argments='ALL'",
+        type:'get',
+        success: function(result){
+            //JSON.stringify(toDataString(result))
+            var transList = JSON.parse(toDataString(result));
+            if(transList && transList.length > 0){
+                $('#chainreportpnl').empty();
+                for (var i = transList.length - 1; i >= 0; i--) {
+                    var client = JSON.parse(localStorage.getItem("loggedInClient"));
+                    var tran = transList[i];
+                    if(client.Record.clientType == "Regular"){
+                        //check for regular account
+                        if(client.Key != tran.Record.CF && client.Key != tran.Record.CT){
+                            continue;
+                        }
+                    }
+                    $('#chainreportpnl').append(getChainReportItem(tran.TransactionID, tran.Record.CF, tran.Record.CT, tran.Record.Asset.AssetName, tran.Record.Asset.AssetAmount, tran.Record.TimeStamp));
+                }
+            }else{
+                $('#chainreportpnl').append("No data available.");
+            }
+        }
+    });
+}
+
+function getChainReportItem(tranid, from, to, asset, amount, timestamp) {
+
+    return "<div class='panel panel-default'><div class='panel-heading'><a>" + tranid + "</a><div class='pull-right'> Timestamp: " + timestamp + " </div></div><div class='panel-body'>" + ""
+        + getClientNameByKey(from) + "&emsp;<i class='fa fa-arrow-right' aria-hidden='true'></i>&emsp;"
+        + getClientNameByKey(to) + "&emsp;" + "<div class='btn btn-danger pull-right'>" + amount + "&emsp;" + asset + "</div></div></div>";
+
+}
+
+function getClientNameByKey(key){
+    var clientList = getClientList();
+    for(var i=0;i<clientList.length;i++){
+        if(key == clientList[i].Key){
+            return clientList[i].Record.Name + " (" + clientList[i].Key + ") ";
+        }
+    }
+    return "*Invalid Client*";
 }

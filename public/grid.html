@@ -174,7 +174,7 @@
                             </div>
                             <div class="user-wrapper bg-dark">
                                 <a class="user-link" href="">
-                                    <img class="media-object img-thumbnail user-img" alt="User Picture" src="assets/img/user_citi.png">
+                                    <img id="portrait" class="media-object img-thumbnail user-img" alt="User Picture" src="assets/img/user_citi.png">
                                     <!--<span class="label label-danger user-label">16</span>-->
                                 </a>
 
@@ -240,6 +240,17 @@
             </header>
             <div class="body" id="chainreportpnl">
                 <!--<button id ="btnGetTradeData" class="btn btn-success">Get Data</button>-->
+                <div class="col-lg-4"></div>
+                <div class="col-lg-1"></div>
+                <div id="loading-indicator" class="col-lg-2" style="margin: auto">
+                    <br/>
+                    <br/>
+                    <br/>
+                    <img id="loading" class="" alt="Loading..." src="assets/img/loading indicator.gif">
+                    <h4>Loading...</h4>
+                </div>
+                <div class="col-lg-1"></div>
+                <div class="col-lg-4"></div>
             </div>
         </div>
     </div>
@@ -371,23 +382,7 @@
                         Metis.metisSortable();
                         initAccountDisplay();
                        // var chain = localStorage.chaindata;
-                        var chain = JSON.parse(localStorage.getItem("chaindata"));
-                        if(chain && chain.length > 0){
-                            $('#chainreportpnl').empty();
-                            for (var i = chain.length - 1; i >= 0; i--) {
-                                var client = JSON.parse(localStorage.getItem("loggedInClient"));
-                                var item = chain[i];
-                                if(client.clientType == "Regular"){
-                                    //check for regular account
-                                    if(client.clientName != item.from && client.clientName != item.to){
-                                        continue;
-                                    }
-                                }
-                                $('#chainreportpnl').append(getChainReportItem(item.hash, item.from, item.to, item.asset, item.amount, item.timestamp));
-                            }
-                        }else{
-                            $('#chainreportpnl').append("No data available.");
-                        }
+                      chainReportOnReady();
 
                     });
 
