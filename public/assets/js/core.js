@@ -533,6 +533,7 @@ function submitTransactionOnPageReady(){
 
 //submit new transaction
 $(document).on('click', '#btnSubmitTransaction', function () {
+    $.blockUI({ message: '<h3><img src="assets/img/loading indicator.gif" />&emsp; Processing Transaction...</h3>' });
     var currentClient = getCurrentUser();
     var from = currentClient.Key;
     var to = $('#submitTrans_broker').val();
@@ -550,6 +551,7 @@ $(document).on('click', '#btnSubmitTransaction', function () {
         url: "http://182.61.49.216:8081/invokeFunc2?funcName='doInnerTransaction'&argments='" + from + "' '" + to + "' '" + asset + "' '" + amount + "'",
         type:'get',
         success: function(result){
+            $.unblockUI();
             //localStorage.setItem("ClientList", JSON.stringify(toDataString(result)));
             bootbox.alert("<i class='fa fa-2x fa-check-circle-o' style='color:green'></i>&emsp;Transaction submitted successfully.", function () { });
         }
